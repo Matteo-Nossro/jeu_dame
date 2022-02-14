@@ -10,6 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Jeu_dame">
         <activity
+            android:name=".Settings"
+            android:exported="false" />
+        <activity
+            android:name=".LeaderBoard"
+            android:exported="false" />
+        <activity
+            android:name=".Accueil"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
