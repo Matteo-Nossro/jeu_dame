@@ -36,6 +36,7 @@ output.json
 obj/
 .externalNativeBuild
 
+idea
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
