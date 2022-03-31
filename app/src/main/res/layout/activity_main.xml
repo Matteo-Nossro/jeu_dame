@@ -24,36 +24,13 @@
         </LinearLayout>
 
         <GridLayout
+            android:id="@+id/plate"
             android:layout_width="match_parent"
             android:layout_height="513dp"
-            android:columnCount="8"
-            android:rowCount="8"
-            android:background="@color/design_default_color_primary_dark">
+            android:background="@color/design_default_color_primary_dark"
+        >
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@color/cardview_dark_background"
-                >
 
-            </ImageView>
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:layout_row="3"
-                android:layout_column="2"
-                android:text="je suis une licorne de po"
-                android:background="@color/black"
-                />
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:layout_row="1"
-                android:layout_column="1"
-                android:text="je suis une licorne de po" />
 
         </GridLayout>
 
