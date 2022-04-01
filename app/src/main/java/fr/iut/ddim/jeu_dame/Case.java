@@ -9,6 +9,10 @@ public class Case {
     public ImageView getImageCase(){ return  imageCase;}
     public  void setImageCase (ImageView imageCase){ this.imageCase = imageCase;}
 
+    private ImageView lueurcase;
+    public ImageView getlueurcase(){ return  lueurcase;}
+    public  void setlueurcase(ImageView lueurcase){ this.lueurcase = lueurcase;}
+
     private int col ;
     public int getCol() {
         return col;
@@ -27,6 +31,7 @@ public class Case {
         this.col = col;
         this.row = row;
         this.imageCase = imageCase;
+        this.lueurcase = null;
     }
     public Piece getPiece() {
         return piece;
@@ -35,7 +40,7 @@ public class Case {
         this.piece = piece;
 
     }
-    public boolean HasPiece(){
+    public boolean hasPiece(){
         return (piece != null);
     }
 }

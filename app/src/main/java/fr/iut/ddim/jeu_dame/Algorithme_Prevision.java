@@ -1,7 +1,5 @@
 package fr.iut.ddim.jeu_dame;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -27,7 +25,7 @@ public class Algorithme_Prevision {
         }
     }
 
-    public PreviewAutorisedMouvementResult PreviewAutorisedMouvement(Piece piece,Case[][] plate)
+    public PreviewAutorisedMouvementResult previewAutorisedMouvement(Piece piece, Case[][] plate, boolean mustEatStart)
     {
 
 
@@ -36,11 +34,11 @@ public class Algorithme_Prevision {
         ArrayList<Case> lstDiago = new ArrayList<Case>();
         ArrayList<Case> lstDiagoSave = new ArrayList<Case>();
 
-        lstDiago = GetDiagonnal(piece.getCase(),plate);
+        lstDiago = getDiagonnal(piece.getCase(),plate);
         lstDiagoSave = (ArrayList<Case>) lstDiago.clone();
         for(int i=0; i<lstDiago.size();i++)
         {
-            if(lstDiago.get(i).HasPiece())
+            if(lstDiago.get(i).hasPiece())
             {
                 if(lstDiago.get(i).getPiece().getColor()==piece.getColor())
                     lstDiagoSave.remove(lstDiago.get(i).getPiece().getCase());
@@ -48,38 +46,79 @@ public class Algorithme_Prevision {
                 {
                     Case cDestination = lstDiago.get(i);
 
-                    int rowDest = piece.getCase().getRow() - cDestination.getRow();
-                    int colDest =  piece.getCase().getCol() - cDestination.getCol();
-                    if(plate[rowDest][colDest].HasPiece())
-                        lstDiagoSave.remove(i);
-                    else
-                    {
-                        lstDiagoSave.remove(i);
-                        piecesRemove.put(lstDiago.get(i),lstDiago.get(i).getPiece());
-                        lstDiagoSave.add(plate[rowDest][colDest]);
+                    int rowDest;
+                    rowDest = cDestination.getRow()+( cDestination.getRow() - piece.getCase().getRow() );
+
+                    int colDest;
+                    colDest = cDestination.getCol()+(cDestination.getCol() - piece.getCase().getCol() );
+                    if ( rowDest != -1 && colDest != -1 && rowDest !=8 && colDest !=8){
+
+                        if(plate[rowDest][colDest].hasPiece())
+                            lstDiagoSave.remove(cDestination);
+                        else
+                        {
+                            lstDiagoSave.remove(cDestination);
+                            piecesRemove.put(plate[rowDest][colDest],lstDiago.get(i).getPiece());
+                            lstDiagoSave.add(plate[rowDest][colDest]);
+                        }
                     }
+                    else
+                        lstDiagoSave.remove(cDestination);
+
                 }
             }
         }
-        return new PreviewAutorisedMouvementResult(piecesRemove,lstDiagoSave);
+        ArrayList<Case> lstRemove = new ArrayList<Case>();
+
+        // Gestion obligation manger debut
+        if(mustEatStart)
+        {
+            ArrayList<Case> lstRemove1 = new ArrayList<Case>();
+            int movingBack1;
+            int movingBack2;
+            movingBack1 = piece.getCase().getRow()-1;
+            movingBack2 = piece.getCase().getRow()+1;
+
+            for(int i = 0; i < lstDiagoSave.size() ;i++)
+                if (movingBack1 == lstDiagoSave.get(i).getRow() ||movingBack2 == lstDiagoSave.get(i).getRow() )
+                    lstRemove.add(lstDiagoSave.get(i));
+
+        }
+        else{
+            //#region gestion mouvement arrière
+            int movingBack;
+            if (piece.getColor() == "noir")
+                movingBack = piece.getCase().getRow()-1;
+            else
+                movingBack = piece.getCase().getRow()+1;
+
+            for(int i = 0; i < lstDiagoSave.size() ;i++)
+                if (movingBack == lstDiagoSave.get(i).getRow())
+                    lstRemove.add(lstDiagoSave.get(i));
+            //#endregion
+        }
+        for(int i = 0; i < lstRemove.size() ;i++)
+            lstDiagoSave.remove(lstRemove.get(i));
+        ///////////////////
+
+            return new PreviewAutorisedMouvementResult(piecesRemove,lstDiagoSave);
     }
-    //TODO : revoir gestion coté crach cause index = -1
-    public ArrayList<Case> GetDiagonnal(Case caseDepart,Case[][] lstCase){
+    public ArrayList<Case> getDiagonnal(Case caseDepart, Case[][] lstCase){
         ArrayList<Case> lstCaseDiago = new ArrayList<Case>();
         int col = caseDepart.getCol();
         int row = caseDepart.getRow();
-        if(row != 8 && col != 8)
+        if(row != 7 && col != 7)
             lstCaseDiago.add(lstCase[row+1][col+1]);
         if(row != 0 && col != 0)
             lstCaseDiago.add(lstCase[row-1][col-1]);
-        if(row != 0 && col != 8)
+        if(row != 0 && col != 7)
             lstCaseDiago.add(lstCase[row-1][col+1]);
-        if(row != 8 && col != 0)
+        if(row != 7 && col != 0)
             lstCaseDiago.add(lstCase[row+1][col-1]);
         return lstCaseDiago;
     }
 
-    public Boolean PlayerCanEat(String colorTurn,Case [][]plate){
+    public Boolean playerCanEat(String colorTurn, Case [][]plate){
 
         ArrayList<Piece> lstPieces = new ArrayList<Piece>();
         for(int i=0;i<7;i++)
@@ -87,23 +126,23 @@ public class Algorithme_Prevision {
             for(int j=0;j<7;j++)
             {
                 ArrayList<Case> lstDiago = new ArrayList<Case>();
-                if(plate[i][j].HasPiece())
+                if(plate[i][j].hasPiece())
                     if(plate[i][j].getPiece().getColor() == colorTurn)
-                        lstDiago = GetDiagonnal(plate[i][j].getPiece().getCase(),plate);
+                        lstDiago = getDiagonnal(plate[i][j].getPiece().getCase(),plate);
                 for(int k=0; k<lstDiago.size();k++)
                 {
-                    if(lstDiago.get(k).HasPiece())
+                    if(lstDiago.get(k).hasPiece())
                     {
                         if(lstDiago.get(k).getPiece().getColor()!= plate[i][j].getPiece().getColor())
                         {
                             Case cDestination = lstDiago.get(k);
 
-                            int rowDest = plate[i][j].getPiece().getCase().getRow() - cDestination.getRow();
-                            int colDest =  plate[i][j].getPiece().getCase().getCol() - cDestination.getCol();
-                            if(!plate[rowDest][colDest].HasPiece())
-                            {
-                                return true;
-                            }
+                            int rowDest = cDestination.getRow() + cDestination.getRow() -plate[i][j].getPiece().getCase().getRow() ;
+                            int colDest = cDestination.getCol() + cDestination.getCol()- plate[i][j].getPiece().getCase().getCol()  ;
+                            if ( rowDest != -1 && colDest != -1 && rowDest !=8 && colDest !=8)
+                                if(!plate[rowDest][colDest].hasPiece())
+                                    return true;
+
                         }
                     }
                 }

@@ -3,13 +3,14 @@ package fr.iut.ddim.jeu_dame;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
     private Algorithme_Prevision algorithme = new Algorithme_Prevision();
     private Algorithme_Prevision.PreviewAutorisedMouvementResult previewMouvement;
     private String colorTurn;
+    private boolean mustEat = false;
+    private boolean mustEatStart =false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
         ImageView v = new ImageView(this); // création de la case visuel
         v.setImageDrawable(getDrawable(R.drawable.noir_2mdpi));
        // g.StartGame(new Player(),new Player(),gridLayout);
-        this.ConstructPlateInitial(8,8);
-        this.StartGame();
+        this.constructPlateInitial(8,8);
+        this.startGame();
     }
 
 
@@ -45,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //plateau
-    public void ConstructPlateInitial(int col,int row){
+    public void constructPlateInitial(int col, int row){
 
         gridLayout.setColumnCount(col);
         gridLayout.setRowCount(row);
@@ -90,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
                 imgCase.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        OnClickCase(c);
+                        onClickCase(c);
                     }
                 });
 
@@ -112,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
                 imgPion.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        OnClickPiece(p);
+                        onClickPiece(p);
                     }
                 });
 
@@ -122,47 +125,98 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void StartGame(){
+    public void startGame(){
         colorTurn = "noir";
     }
 
-    public void OnClickPiece(Piece piece){//sender /event
+    public void onClickPiece(Piece piece){//sender /event
         Log.i("color",""+piece.getColor());
+        if (!mustEat) {
+            if (piece.getColor() == colorTurn) {
+                previewMouvement = algorithme.previewAutorisedMouvement(piece, plateBack,mustEatStart);
+                resetDisplayMovement();
+                showDisplayMovement();
 
-        if(piece.getColor()==colorTurn) {
-            previewMouvement = algorithme.PreviewAutorisedMouvement(piece,plateBack);
-            this.selectedPiece = piece;
+                this.selectedPiece = piece;
+            }
         }
-
     }
 
-    public void OnClickCase(Case caseVisee)
+    public void resetDisplayMovement(){
+        for (int i = 0; i< gridLayout.getChildCount();i++){
+            RelativeLayout enfantGrid = (RelativeLayout)gridLayout.getChildAt(i);
+            ArrayList<View> lstRemoveLueur = new ArrayList<View>();
+            for (int j = 0 ; j < enfantGrid.getChildCount();j++){
+                View enfantLayout = enfantGrid.getChildAt(j);
+                if (enfantLayout.getTag()!= null && enfantLayout.getTag().equals("lueur"))
+                    lstRemoveLueur.add(enfantLayout);
+            }
+            for (int k = 0;k< lstRemoveLueur.size();k++)
+                enfantGrid.removeView(lstRemoveLueur.get(k));
+        }
+    }
+    public void showDisplayMovement(){
+        for (int i = 0; i < previewMouvement.getLstMouvement().size();i++){
+            RelativeLayout parentArriver = (RelativeLayout) previewMouvement.getLstMouvement().get(i).getImageCase().getParent();
+
+            ImageView lueurCase = new ImageView(this); // création de la case visuel
+            lueurCase.setImageDrawable(getDrawable(R.drawable.lueurcase));
+            lueurCase.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            lueurCase.setTag("lueur");
+
+
+            lueurCase.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+
+            parentArriver.addView(lueurCase);
+
+        }
+    }
+    public void onClickCase(Case caseVisee)
     {
+
         if(selectedPiece != null){
             if(previewMouvement.getLstMouvement().contains(caseVisee)) { // On a les cases ou l'on peut aller
+                selectedPiece.movePiece(selectedPiece.getCase(), caseVisee);
                 if (previewMouvement.getPiecesRemove().containsKey(caseVisee)) { // la case ï¿½limine une piece
                     Piece pieceDead = previewMouvement.getPiecesRemove().get(caseVisee);
+                    pieceDead.eatPiece();
                     pieceDead.getCase().setPiece(null);
+
                     pieceDead.setCase(null);
+
+                    previewMouvement = algorithme.previewAutorisedMouvement(selectedPiece,plateBack,false);
+
+                    if (previewMouvement.getPiecesRemove().size() == 0){
+                        selectedPiece=null;
+                        mustEat = false;
+                        resetDisplayMovement();
+                        endTurn();
+                    }else{
+                        mustEat = true;
+                        resetDisplayMovement();
+                        showDisplayMovement();
+                    }
+                }else{
+                    resetDisplayMovement();
+                    endTurn();
+
                 }
-                selectedPiece.MovePiece(selectedPiece.getCase(), caseVisee);
-                EndTurn();
             }
-
-
         }
-        selectedPiece=null;
     }
 
-    public void EndTurn(){
+    public void endTurn(){
       //  if(!algorithme.PlayerCanEat(colorTurn,plateBack))
-        {
-            if(colorTurn == "noir")
+
+
+            if(colorTurn == "noir"){
                 colorTurn = "blanc";
+            }
             else if(colorTurn == "blanc")
                 colorTurn = "noir";
-        }
+            mustEatStart = algorithme.playerCanEat(colorTurn,plateBack);
 
     }
+
 }
 

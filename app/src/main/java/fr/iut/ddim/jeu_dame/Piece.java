@@ -27,7 +27,7 @@ public class Piece {
         this.imagePion = imagePion;
     }
 
-    public void MovePiece(Case caseDepart,Case caseArrive){
+    public void movePiece(Case caseDepart, Case caseArrive){
 
         Piece p = caseDepart.getPiece();
         RelativeLayout parentDepart = (RelativeLayout)p.getImagePion().getParent();
@@ -42,4 +42,9 @@ public class Piece {
         this.setCase(caseArrive);
 
     }
+    public void eatPiece(){
+        RelativeLayout parentDepart = (RelativeLayout)this.getImagePion().getParent();
+        parentDepart.removeView(this.getImagePion());
+    }
+
 }
