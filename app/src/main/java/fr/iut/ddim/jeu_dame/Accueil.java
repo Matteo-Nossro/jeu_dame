@@ -8,42 +8,40 @@ import android.view.View;
 import android.widget.Button;
 
 
-public class Accueil extends AppCompatActivity {
 
-    private Button btPlay;
-    private Button btLeaderBoard;
-    private Button btSettings;
+public class Accueil extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accueil);
-
-
-        btPlay = findViewById(R.id.Play);
-        btLeaderBoard = findViewById(R.id.LeaderBoard);
-        btSettings = findViewById(R.id.Settings);
-
-
     }
-    /// setup les boutons de navigations
 
     /**
-     * lance la partie
+     * Afficher le profil du joueur
      * @param view
      */
-    public void onClickPlay(View view) {
-        Intent mainActivity = new Intent(this, MainActivity.class);
-        startActivity(mainActivity);
+    public void onClickAfficheProfil(View view) {
+        Intent intentProfil = new Intent(getApplicationContext(), Profil.class);
+        startActivity(intentProfil);
     }
 
-    public void onClickLeaderBoard(View view) {
-        Intent leaderBoardActivity = new Intent(this, LeaderBoard.class);
-        startActivity(leaderBoardActivity);
+    /**
+     * Lancer le jeu
+     * @param view
+     */
+    public void onClickLanceJeu(View view) {
+        Intent intentGame = new Intent(getApplicationContext(), Dame.class);
+        startActivity(intentGame);
     }
 
-    public void onClickSettings(View view) {
-        Intent settingsActivity = new Intent(this, Settings.class);
-        startActivity(settingsActivity);
+    /**
+     * Fermer l'application
+     * @param view
+     */
+    public void onClickQuitteJeu(View view) {
+        moveTaskToBack(true);
+        android.os.Process.killProcess(android.os.Process.myPid());
+        System.exit(1);
     }
 }

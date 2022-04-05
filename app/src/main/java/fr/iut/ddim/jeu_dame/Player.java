@@ -1,55 +1,57 @@
 package fr.iut.ddim.jeu_dame;
 
 public class Player {
-
     private int id;
-    private String name;
-    private int nbJouer;
-    private int nbGagner;
-    private int nbPerdu;
+    private String nom;
+    private int nbParties;
+    private int nbVictoires;
+    private int nbDefaites;
 
-    public void Player (int id,String name,int nbJouer,int nbGagner,int nbPerdu){
-        this.id         = id;
-        this.name       = name;
-        this.nbJouer    = nbJouer;
-        this.nbGagner   = nbGagner;
-        this.nbPerdu    = nbPerdu;
+    public void Player (int id, String name, int nbJouer, int nbGagner, int nbPerdu) {
+        this.id = id;
+        this.nom = name;
+        this.nbParties = nbJouer;
+        this.nbVictoires = nbGagner;
+        this.nbDefaites = nbPerdu;
     }
 
     public int getId() {
         return id;
     }
 
-
-    public int getNbJouer() {
-        return nbJouer;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setNbJouer(int nbJouer) {
-        this.nbJouer = nbJouer;
+    public String getNom() {
+        return nom;
     }
 
-    public int getNbGagner() {
-        return nbGagner;
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 
-    public void setNbGagner(int nbGagner) {
-        this.nbGagner = nbGagner;
+    public int getNbParties() {
+        return nbParties;
     }
 
-    public String getName() {
-        return name;
+    public void setNbParties(int nbParties) {
+        this.nbParties = nbParties;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public int getNbVictoires() {
+        return nbVictoires;
     }
 
-    public int getNbPerdu() {
-        return nbPerdu;
+    public void setNbVictoires(int nbVictoires) {
+        this.nbVictoires = nbVictoires;
     }
 
-    public void setNbPerdu(int nbPerdu) {
-        this.nbPerdu = nbPerdu;
+    public int getNbDefaites() {
+        return nbDefaites;
+    }
+
+    public void setNbDefaites(int nbDefaites) {
+        this.nbDefaites = nbDefaites;
     }
 }
