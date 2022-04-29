@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         nom = this.findViewById(R.id.lib_nom);
-        nomJoueur = nom.getText().toString();
+        nom.setText("");
         apiUrl = "https://iutdijon.u-bourgogne.fr/mmiddim/Etudiants/DDIM2122/ngm202223/API_Dames/api/";
     }
 
@@ -109,41 +109,67 @@ public class MainActivity extends AppCompatActivity {
     public void onClickCreeJoueur(View view) throws IOException {
         // Construction du lien de l'API
         nomJoueur = nom.getText().toString();
-        apiCreatePlayer = apiUrl + "create.php?name=";
-        urlCreatePlayer = apiCreatePlayer + nomJoueur;
 
-        Log.i("URL", urlCreatePlayer);
-        // Construction de la requête HTTP
-        OkHttpClient client = new OkHttpClient();
-        Request requeteCree = new Request.Builder()
-                .url(urlCreatePlayer)
-                .build();
-        client.newCall(requeteCree).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
+        if (nomJoueur.equals("")) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(
+                            MainActivity.this,
+                            "Ce nom n'est pas valide !",
+                            Toast.LENGTH_LONG
+                    ).show();
+                }
+            });
+        }
+        else {
+            apiCreatePlayer = apiUrl + "create.php?name=";
+            urlCreatePlayer = apiCreatePlayer + nomJoueur;
 
-            @Override
-            public void onResponse(Call call, Response response) {
-                Log.i("api", urlCreatePlayer);
-                if (response.isSuccessful()) {
-                    Log.i("Réponse", "OK");
+            Log.i("URL", urlCreatePlayer);
+            // Construction de la requête HTTP
+            OkHttpClient client = new OkHttpClient();
+            Request requeteCree = new Request.Builder()
+                    .url(urlCreatePlayer)
+                    .build();
+            client.newCall(requeteCree).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    e.printStackTrace();
                 }
-                else {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(
-                                    MainActivity.this,
-                                    "Ce nom est déjà prit !",
-                                    Toast.LENGTH_LONG
-                            ).show();
-                        }
-                    });
+
+                @Override
+                public void onResponse(Call call, Response response) {
+                    Log.i("api", urlCreatePlayer);
+                    if (response.isSuccessful()) {
+                        Log.i("Réponse", "OK");
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(
+                                        MainActivity.this,
+                                        "Joueur créé, vous pouvez vous connecter !",
+                                        Toast.LENGTH_LONG
+                                ).show();
+                            }
+                        });
+                    }
+                    else {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(
+                                        MainActivity.this,
+                                        "Ce nom est déjà prit !",
+                                        Toast.LENGTH_LONG
+                                ).show();
+                            }
+                        });
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     /**

@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".Profil">
 
+    <View
+        android:id="@+id/bodyProfil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:backgroundTint="#CF9763"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/libNom"
         android:layout_width="wrap_content"
@@ -13,6 +24,7 @@
         android:layout_marginTop="50dp"
         android:fontFamily="sans-serif-medium"
         android:text="TextView"
+        android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,6 +36,7 @@
         android:layout_height="38dp"
         android:layout_marginTop="50dp"
         android:text="TextView"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/libNom" />
@@ -34,6 +47,7 @@
         android:layout_height="38dp"
         android:layout_marginTop="50dp"
         android:text="TextView"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,6 +59,7 @@
         android:layout_height="38dp"
         android:layout_marginTop="50dp"
         android:text="TextView"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,6 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
+        android:backgroundTint="#4a4a4a"
         android:onClick="onClickAffichePopUpChangeNom"
         android:text="Changer mon nom"
         app:layout_constraintBottom_toBottomOf="parent"

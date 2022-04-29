@@ -1,6 +1,5 @@
 package fr.iut.ddim.jeu_dame;
 
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,8 +18,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-
-
 
 public class PopUpChangeNom extends Dialog {
     @Override

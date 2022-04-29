@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="30dp"
+        android:backgroundTint="#4a4a4a"
         android:onClick="onClickAfficheProfil"
         android:text="Profil"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,6 +24,7 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="300dp"
+        android:backgroundTint="#4a4a4a"
         android:onClick="onClickLanceJeu"
         android:text="Jouer"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,9 +36,21 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:backgroundTint="#4a4a4a"
         android:onClick="onClickQuitteJeu"
         android:text="Quitter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnJouer" />
+
+    <View
+        android:id="@+id/bodyAccueil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:backgroundTint="#CF9763"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
