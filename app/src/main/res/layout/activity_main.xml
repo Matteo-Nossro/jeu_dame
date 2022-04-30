@@ -42,6 +42,7 @@
         android:backgroundTint="#4A4A4A"
         android:onClick="onClickConnexion"
         android:text="Connexion"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints" />
@@ -55,6 +56,7 @@
         android:backgroundTint="#4A4A4A"
         android:onClick="onClickCreeJoueur"
         android:text="Créer un joueur"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints" />

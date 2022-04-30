@@ -74,6 +74,7 @@
         android:backgroundTint="#4a4a4a"
         android:onClick="onClickAffichePopUpChangeNom"
         android:text="Changer mon nom"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
